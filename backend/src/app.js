@@ -2,7 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const routes = require('./routes');
+const rateLimit = require('express-rate-limit');
+
+/* Import auth routes */
+const authRoutes = require('./routes/authRoute');
 
 const app = express();
 
@@ -12,10 +15,20 @@ app.use(helmet());
 app.use(express.json());
 app.use(morgan('dev'));
 
-// Routes
-app.use('/api', routes);
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+  message: 'Too many requests, please try again later'
+});
+app.use(limiter);
 
-// Health check route
-app.get('/', (req, res) => res.send('Hospital Management Backend Running'));
+// Auth routes
+app.use('/api/auth', authRoutes);
+
+// Default / root route (public)
+app.get('/', (req, res) => {
+  res.send('Hospital Management Backend Running');
+});
 
 module.exports = app;
