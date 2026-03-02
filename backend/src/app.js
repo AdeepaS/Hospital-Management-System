@@ -4,8 +4,8 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 
-/* Import auth routes */
-const authRoutes = require('./routes/authRoute');
+/* Import all routes */
+const routes = require('./routes/index');
 
 const app = express();
 
@@ -23,8 +23,8 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// Auth routes
-app.use('/api/auth', authRoutes);
+// Mount all API routes
+app.use('/api', routes);
 
 // Default / root route (public)
 app.get('/', (req, res) => {

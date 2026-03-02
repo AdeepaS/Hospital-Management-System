@@ -20,6 +20,10 @@ function Home() {
     navigate('/')
   }
 
+  const handleBookAppointment = () => {
+    navigate('/appointments')
+  }
+
   return (
     <div className="min-h-screen bg-slate-100 px-4 py-8">
       {/* Centered dashboard container */}
@@ -32,12 +36,22 @@ function Home() {
             </h1>
             {user.role && <p className="text-sm text-slate-500">Role: {user.role}</p>}
           </div>
-          <button
-            onClick={handleLogout}
-            className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2"
-          >
-            Logout
-          </button>
+          <div className="flex gap-2">
+            {user.role === 'patient' && (
+              <button
+                onClick={handleBookAppointment}
+                className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+              >
+                Book Appointment
+              </button>
+            )}
+            <button
+              onClick={handleLogout}
+              className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2"
+            >
+              Logout
+            </button>
+          </div>
         </header>
 
         {/* Simple dashboard grid */}

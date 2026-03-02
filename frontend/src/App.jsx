@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './context/AuthContext'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Home from './pages/Home'
+import AppointmentBooking from './pages/AppointmentBooking'
 import './App.css'
 
 function ProtectedRoute({ children }) {
@@ -47,6 +48,14 @@ function App() {
             element={(
               <ProtectedRoute>
                 <Home />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
+            path="/appointments"
+            element={(
+              <ProtectedRoute>
+                <AppointmentBooking />
               </ProtectedRoute>
             )}
           />
