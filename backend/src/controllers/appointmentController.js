@@ -58,3 +58,108 @@ exports.createAppointment = async (req, res) => {
     res.status(500).json({ message: error.message || 'Server error' });
   }
 };
+
+// @desc    Get my appointments (patient or doctor)
+// @route   GET /api/appointments/my
+// @access  Private (Patient or Doctor)
+exports.getMyAppointments = async (req, res) => {
+  try {
+    const { role, _id } = req.user;
+
+    let query = {};
+
+    if (role === 'patient') {
+      query.patient = _id;
+    } else if (role === 'doctor') {
+      // Find doctor record associated with this user
+      const doctor = await Doctor.findOne({ email: req.user.email });
+      if (!doctor) {
+        return res.status(404).json({ message: 'Doctor profile not found' });
+      }
+      query.doctor = doctor._id;
+    } else {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+
+    const appointments = await Appointment.find(query)
+      .populate('patient', 'name username email')
+      .populate('doctor', 'name specialization consultationFee')
+      .sort({ date: 1, time: 1 });
+
+    res.json(appointments);
+
+  } catch (error) {
+    console.error('Get my appointments error:', error);
+    res.status(500).json({ message: error.message || 'Server error' });
+  }
+};
+
+// @desc    Get all appointments with filters (admin only)
+// @route   GET /api/appointments
+// @access  Private (Admin only)
+exports.getAllAppointments = async (req, res) => {
+  try {
+    const { date, doctor, status } = req.query;
+
+    let query = {};
+
+    if (date) query.date = date;
+    if (doctor) query.doctor = doctor;
+    if (status) query.status = status;
+
+    const appointments = await Appointment.find(query)
+      .populate('patient', 'name username email')
+      .populate('doctor', 'name specialization consultationFee')
+      .sort({ date: 1, time: 1 });
+
+    res.json(appointments);
+
+  } catch (error) {
+    console.error('Get all appointments error:', error);
+    res.status(500).json({ message: error.message || 'Server error' });
+  }
+};
+
+// @desc    Cancel appointment
+// @route   PUT /api/appointments/:id/cancel
+// @access  Private (Patient - own, Doctor - own, Admin - any)
+exports.cancelAppointment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { role, _id } = req.user;
+
+    const appointment = await Appointment.findById(id);
+
+    if (!appointment) {
+      return res.status(404).json({ message: 'Appointment not found' });
+    }
+
+    // Check authorization
+    if (role === 'patient') {
+      if (appointment.patient.toString() !== _id.toString()) {
+        return res.status(403).json({ message: 'Not authorized to cancel this appointment' });
+      }
+    } else if (role === 'doctor') {
+      const doctor = await Doctor.findOne({ email: req.user.email });
+      if (!doctor || appointment.doctor.toString() !== doctor._id.toString()) {
+        return res.status(403).json({ message: 'Not authorized to cancel this appointment' });
+      }
+    } else if (role !== 'admin') {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+
+    // Update status to cancelled
+    appointment.status = 'cancelled';
+    await appointment.save();
+
+    const updatedAppointment = await Appointment.findById(id)
+      .populate('patient', 'name username email')
+      .populate('doctor', 'name specialization consultationFee');
+
+    res.json(updatedAppointment);
+
+  } catch (error) {
+    console.error('Cancel appointment error:', error);
+    res.status(500).json({ message: error.message || 'Server error' });
+  }
+};

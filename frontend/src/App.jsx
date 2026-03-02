@@ -4,21 +4,40 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Home from './pages/Home'
 import AppointmentBooking from './pages/AppointmentBooking'
+import PatientDashboard from './pages/PatientDashboard'
+import DoctorDashboard from './pages/DoctorDashboard'
+import AdminDashboard from './pages/AdminDashboard'
 import './App.css'
 
-function ProtectedRoute({ children }) {
-  const { isAuthenticated } = useAuth()
+function ProtectedRoute({ children, allowedRoles }) {
+  const { isAuthenticated, user } = useAuth()
+  
   if (!isAuthenticated) {
     return <Navigate to="/" replace />
   }
+  
+  if (allowedRoles && !allowedRoles.includes(user?.role)) {
+    // Redirect to appropriate dashboard if user doesn't have access
+    if (user?.role === 'patient') return <Navigate to="/patient" replace />
+    if (user?.role === 'doctor') return <Navigate to="/doctor" replace />
+    if (user?.role === 'admin') return <Navigate to="/admin" replace />
+    return <Navigate to="/" replace />
+  }
+  
   return children
 }
 
 function PublicRoute({ children }) {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, user } = useAuth()
+  
   if (isAuthenticated) {
+    // Redirect to role-specific dashboard
+    if (user?.role === 'patient') return <Navigate to="/patient" replace />
+    if (user?.role === 'doctor') return <Navigate to="/doctor" replace />
+    if (user?.role === 'admin') return <Navigate to="/admin" replace />
     return <Navigate to="/home" replace />
   }
+  
   return children
 }
 
@@ -44,6 +63,38 @@ function App() {
             )}
           />
           <Route
+            path="/patient"
+            element={(
+              <ProtectedRoute allowedRoles={['patient']}>
+                <PatientDashboard />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
+            path="/doctor"
+            element={(
+              <ProtectedRoute allowedRoles={['doctor']}>
+                <DoctorDashboard />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
+            path="/admin"
+            element={(
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
+            path="/appointments"
+            element={(
+              <ProtectedRoute allowedRoles={['patient']}>
+                <AppointmentBooking />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
             path="/home"
             element={(
               <ProtectedRoute>
@@ -51,15 +102,6 @@ function App() {
               </ProtectedRoute>
             )}
           />
-          <Route
-            path="/appointments"
-            element={(
-              <ProtectedRoute>
-                <AppointmentBooking />
-              </ProtectedRoute>
-            )}
-          />
-          {/* Optional explicit /login route mapping to root behaviour */}
           <Route
             path="/login"
             element={(

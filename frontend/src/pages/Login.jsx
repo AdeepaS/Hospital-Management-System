@@ -12,7 +12,17 @@ function Login() {
     try {
       const data = await login({ username, password })
       console.log('Login page success, user data:', data)
-      navigate('/home')
+      
+      // Redirect based on role
+      if (data.role === 'patient') {
+        navigate('/patient')
+      } else if (data.role === 'doctor') {
+        navigate('/doctor')
+      } else if (data.role === 'admin') {
+        navigate('/admin')
+      } else {
+        navigate('/home')
+      }
     } catch (err) {
       console.error('Login page error:', err)
       // error message is surfaced from AuthContext state

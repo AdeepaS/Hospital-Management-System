@@ -12,7 +12,17 @@ function Register() {
     try {
       const data = await register({ username, email, password, role })
       console.log('Register page success, user data:', data)
-      navigate('/home')
+      
+      // Redirect based on role
+      if (data.role === 'patient') {
+        navigate('/patient')
+      } else if (data.role === 'doctor') {
+        navigate('/doctor')
+      } else if (data.role === 'admin') {
+        navigate('/admin')
+      } else {
+        navigate('/home')
+      }
     } catch (err) {
       console.error('Register page error:', err)
       // error message is surfaced from AuthContext state
