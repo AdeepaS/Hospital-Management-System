@@ -3,16 +3,27 @@ const generateToken = require('../utils/generateToken');
 
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { username, email, password, role } = req.body;
 
-    console.log('Register request body:', { name, email, role });
+    console.log('Register request body:', { username, email, role });
 
-    const userExists = await User.findOne({ email });
-    if (userExists)
+    const existingUser = await User.findOne({
+      $or: [{ email }, { username }]
+    });
+
+    if (existingUser) {
+      if (existingUser.username === username) {
+        return res.status(400).json({ message: 'Username already exists' });
+      }
+      if (existingUser.email === email) {
+        return res.status(400).json({ message: 'User with this email already exists' });
+      }
       return res.status(400).json({ message: 'User already exists' });
+    }
 
     const user = await User.create({
-      name,
+      name: username,
+      username,
       email,
       password,
       role
@@ -23,6 +34,7 @@ exports.register = async (req, res) => {
     const responseUser = {
       _id: user._id,
       name: user.name,
+      username: user.username,
       email: user.email,
       role: user.role
     };
@@ -44,11 +56,11 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
-    console.log('Login request body:', { email });
+    console.log('Login request body:', { username });
 
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.findOne({ username }).select('+password');
 
     if (!user || !(await user.comparePassword(password))) {
       console.log('Login failed: invalid credentials');
@@ -58,6 +70,7 @@ exports.login = async (req, res) => {
     const responseUser = {
       _id: user._id,
       name: user.name,
+      username: user.username,
       email: user.email,
       role: user.role
     };

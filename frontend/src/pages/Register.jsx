@@ -8,9 +8,9 @@ function Register() {
   const navigate = useNavigate()
   const { register, loading, error } = useAuth()
 
-  const handleRegister = async ({ name, email, password, role }) => {
+  const handleRegister = async ({ username, email, password, role }) => {
     try {
-      const data = await register({ name, email, password, role })
+      const data = await register({ username, email, password, role })
       console.log('Register page success, user data:', data)
       navigate('/home')
     } catch (err) {

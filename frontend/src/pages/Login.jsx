@@ -8,9 +8,9 @@ function Login() {
   const navigate = useNavigate()
   const { login, loading, error } = useAuth()
 
-  const handleLogin = async ({ email, password }) => {
+  const handleLogin = async ({ username, password }) => {
     try {
-      const data = await login({ email, password })
+      const data = await login({ username, password })
       console.log('Login page success, user data:', data)
       navigate('/home')
     } catch (err) {

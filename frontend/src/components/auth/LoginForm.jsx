@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 function LoginForm({ onSubmit }) {
-  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState({})
 
@@ -9,7 +9,7 @@ function LoginForm({ onSubmit }) {
     e.preventDefault()
 
     const newErrors = {}
-    if (!email.trim()) newErrors.email = 'Email is required'
+  if (!username.trim()) newErrors.username = 'Username is required'
     if (!password.trim()) newErrors.password = 'Password is required'
 
     setErrors(newErrors)
@@ -17,25 +17,25 @@ function LoginForm({ onSubmit }) {
     if (Object.keys(newErrors).length > 0) return
 
     if (onSubmit) {
-      onSubmit({ email, password })
+      onSubmit({ username, password })
     }
   }
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit} noValidate>
       <div className="space-y-1">
-        <label htmlFor="email" className="block text-sm font-medium text-slate-700">
-          Email
+        <label htmlFor="username" className="block text-sm font-medium text-slate-700">
+          Username
         </label>
         <input
-          id="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          id="username"
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           className="block w-full rounded-lg border border-slate-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          placeholder="you@example.com"
+          placeholder="your username"
         />
-        {errors.email && <p className="text-xs text-red-600">{errors.email}</p>}
+        {errors.username && <p className="text-xs text-red-600">{errors.username}</p>}
       </div>
 
       <div className="space-y-1">

@@ -44,13 +44,13 @@ export function AuthProvider({ children }) {
   }
 
   // Call backend /login via service
-  const login = async ({ email, password }) => {
+  const login = async ({ username, password }) => {
     setLoading(true)
     setError(null)
     try {
-      const data = await loginUser({ email, password })
+      const data = await loginUser({ username, password })
 
-      // Backend returns {_id, name, email, role, token}
+      // Backend returns {_id, name, username, email, role, token}
       const { token: jwtToken, ...userData } = data
       handleAuthSuccess(userData, jwtToken)
       return data
@@ -65,13 +65,13 @@ export function AuthProvider({ children }) {
   }
 
   // Call backend /register via service
-  const register = async ({ name, email, password, role }) => {
+  const register = async ({ username, email, password, role }) => {
     setLoading(true)
     setError(null)
     try {
-      const data = await registerUser({ name, email, password, role })
+      const data = await registerUser({ username, email, password, role })
 
-      // Backend returns {_id, name, email, role, token}
+      // Backend returns {_id, name, username, email, role, token}
       const { token: jwtToken, ...userData } = data
       handleAuthSuccess(userData, jwtToken)
       return data

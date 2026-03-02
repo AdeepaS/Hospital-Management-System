@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 function RegisterForm({ onSubmit }) {
-  const [name, setName] = useState('')
+  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [role, setRole] = useState('patient')
@@ -11,7 +11,7 @@ function RegisterForm({ onSubmit }) {
     e.preventDefault()
 
     const newErrors = {}
-    if (!name.trim()) newErrors.name = 'Name is required'
+    if (!username.trim()) newErrors.username = 'Username is required'
     if (!email.trim()) newErrors.email = 'Email is required'
     if (!password.trim()) newErrors.password = 'Password is required'
     if (!role.trim()) newErrors.role = 'Role is required'
@@ -21,25 +21,25 @@ function RegisterForm({ onSubmit }) {
     if (Object.keys(newErrors).length > 0) return
 
     if (onSubmit) {
-      onSubmit({ name, email, password, role })
+      onSubmit({ username, email, password, role })
     }
   }
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit} noValidate>
       <div className="space-y-1">
-        <label htmlFor="name" className="block text-sm font-medium text-slate-700">
-          Full name
+        <label htmlFor="username" className="block text-sm font-medium text-slate-700">
+          Username
         </label>
         <input
-          id="name"
+          id="username"
           type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           className="block w-full rounded-lg border border-slate-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          placeholder="Jane Doe"
+          placeholder="unique username"
         />
-        {errors.name && <p className="text-xs text-red-600">{errors.name}</p>}
+        {errors.username && <p className="text-xs text-red-600">{errors.username}</p>}
       </div>
 
       <div className="space-y-1">
