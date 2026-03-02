@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from 'react'
+import { loginUser, registerUser } from '../services/authService'
 
 // Create a context to share auth state (user + token) across the app
 const AuthContext = createContext(null)
@@ -8,69 +9,76 @@ export function useAuth() {
   return useContext(AuthContext)
 }
 
-const API_BASE_URL = 'http://localhost:5000/api/auth'
-
 // Provider component that wraps the app and manages auth state
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null)
-  const [token, setToken] = useState(null)
+  const storedAuth = (() => {
+    try {
+      const raw = localStorage.getItem('auth')
+      return raw ? JSON.parse(raw) : null
+    } catch (e) {
+      console.error('Failed to parse stored auth:', e)
+      return null
+    }
+  })()
+
+  const [user, setUser] = useState(storedAuth?.user || null)
+  const [token, setToken] = useState(storedAuth?.token || null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
+  const persistAuth = (userData, jwtToken) => {
+    const payload = { user: userData, token: jwtToken }
+    localStorage.setItem('auth', JSON.stringify(payload))
+  }
+
+  const clearPersistedAuth = () => {
+    localStorage.removeItem('auth')
+  }
+
   const handleAuthSuccess = (userData, jwtToken) => {
+    console.log('Auth success with user:', userData)
     setUser(userData)
     setToken(jwtToken)
     setError(null)
+    persistAuth(userData, jwtToken)
   }
 
-  // Call backend /login
+  // Call backend /login via service
   const login = async ({ email, password }) => {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch(`${API_BASE_URL}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      })
+      const data = await loginUser({ email, password })
 
-      const data = await res.json()
-      if (!res.ok) {
-        throw new Error(data.message || 'Login failed')
-      }
-
-      // Backend returns { message, token }
-      handleAuthSuccess({ email }, data.token)
+      // Backend returns {_id, name, email, role, token}
+      const { token: jwtToken, ...userData } = data
+      handleAuthSuccess(userData, jwtToken)
       return data
     } catch (err) {
-      setError(err.message)
+      const message = err.response?.data?.message || err.message || 'Login failed'
+      console.error('AuthContext login error:', message)
+      setError(message)
       throw err
     } finally {
       setLoading(false)
     }
   }
 
-  // Call backend /register
+  // Call backend /register via service
   const register = async ({ name, email, password, role }) => {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch(`${API_BASE_URL}/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, role })
-      })
+      const data = await registerUser({ name, email, password, role })
 
-      const data = await res.json()
-      if (!res.ok) {
-        throw new Error(data.message || 'Registration failed')
-      }
-
-      // Treat successful registration as logged-in
-      handleAuthSuccess({ name, email, role }, data.token)
+      // Backend returns {_id, name, email, role, token}
+      const { token: jwtToken, ...userData } = data
+      handleAuthSuccess(userData, jwtToken)
       return data
     } catch (err) {
-      setError(err.message)
+      const message = err.response?.data?.message || err.message || 'Registration failed'
+      console.error('AuthContext register error:', message)
+      setError(message)
       throw err
     } finally {
       setLoading(false)
@@ -78,12 +86,16 @@ export function AuthProvider({ children }) {
   }
 
   const logout = () => {
+    console.log('Logging out user')
     setUser(null)
     setToken(null)
     setError(null)
+    clearPersistedAuth()
   }
 
-  const value = { user, token, loading, error, login, register, logout }
+  const isAuthenticated = Boolean(user && token)
+
+  const value = { user, token, loading, error, isAuthenticated, login, register, logout }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

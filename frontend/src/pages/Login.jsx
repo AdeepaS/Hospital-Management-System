@@ -6,14 +6,16 @@ import LoginForm from '../components/auth/LoginForm'
 
 function Login() {
   const navigate = useNavigate()
-  const { login } = useAuth()
+  const { login, loading, error } = useAuth()
 
   const handleLogin = async ({ email, password }) => {
     try {
-      await login({ email, password })
+      const data = await login({ email, password })
+      console.log('Login page success, user data:', data)
       navigate('/home')
-    } catch {
-      // error is handled in AuthContext (error state)
+    } catch (err) {
+      console.error('Login page error:', err)
+      // error message is surfaced from AuthContext state
     }
   }
 
@@ -25,6 +27,12 @@ function Login() {
       footerLink="/register"
       footerLinkText="Register"
     >
+      {error && (
+        <p className="mb-3 text-sm text-red-600">{error}</p>
+      )}
+      {loading && (
+        <p className="mb-3 text-sm text-slate-500">Signing you in...</p>
+      )}
       <LoginForm onSubmit={handleLogin} />
     </AuthLayout>
   )

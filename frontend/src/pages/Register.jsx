@@ -6,14 +6,16 @@ import RegisterForm from '../components/auth/RegisterForm'
 
 function Register() {
   const navigate = useNavigate()
-  const { register } = useAuth()
+  const { register, loading, error } = useAuth()
 
   const handleRegister = async ({ name, email, password, role }) => {
     try {
-      await register({ name, email, password, role })
+      const data = await register({ name, email, password, role })
+      console.log('Register page success, user data:', data)
       navigate('/home')
-    } catch {
-      // error is handled in AuthContext (error state)
+    } catch (err) {
+      console.error('Register page error:', err)
+      // error message is surfaced from AuthContext state
     }
   }
 
@@ -25,6 +27,12 @@ function Register() {
       footerLink="/"
       footerLinkText="Sign in"
     >
+      {error && (
+        <p className="mb-3 text-sm text-red-600">{error}</p>
+      )}
+      {loading && (
+        <p className="mb-3 text-sm text-slate-500">Creating your account...</p>
+      )}
       <RegisterForm onSubmit={handleRegister} />
     </AuthLayout>
   )

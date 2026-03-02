@@ -20,13 +20,25 @@ exports.register = async (req, res) => {
 
     console.log('User created with id:', user._id);
 
+    const responseUser = {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role
+    };
+
+    const token = generateToken(user._id);
+
+    console.log('Register response payload:', { user: responseUser, token });
+
     res.status(201).json({
-      message: 'User registered successfully',
-      token: generateToken(user._id)
+      ...responseUser,
+      token
     });
 
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Register error:', error);
+    res.status(500).json({ message: error.message || 'Server error' });
   }
 };
 
@@ -34,18 +46,33 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    console.log('Login request body:', { email });
+
     const user = await User.findOne({ email }).select('+password');
 
     if (!user || !(await user.comparePassword(password))) {
+      console.log('Login failed: invalid credentials');
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
+    const responseUser = {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role
+    };
+
+    const token = generateToken(user._id);
+
+    console.log('Login success payload:', { user: responseUser, token });
+
     res.json({
-      message: 'Login successful',
-      token: generateToken(user._id)
+      ...responseUser,
+      token
     });
 
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Login error:', error);
+    res.status(500).json({ message: error.message || 'Server error' });
   }
 };
