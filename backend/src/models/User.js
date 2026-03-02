@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
     enum: ['admin', 'doctor', 'nurse', 'patient'],
     default: 'patient'
   }
-}, { timestamps: true });
+}, { timestamps: true, collection: 'users' });
 
 /* Hash password before saving */
 userSchema.pre('save', async function (next) {

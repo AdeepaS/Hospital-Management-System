@@ -5,6 +5,8 @@ exports.register = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
 
+    console.log('Register request body:', { name, email, role });
+
     const userExists = await User.findOne({ email });
     if (userExists)
       return res.status(400).json({ message: 'User already exists' });
@@ -15,6 +17,8 @@ exports.register = async (req, res) => {
       password,
       role
     });
+
+    console.log('User created with id:', user._id);
 
     res.status(201).json({
       message: 'User registered successfully',
