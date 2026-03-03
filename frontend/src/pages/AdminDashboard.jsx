@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { appointmentAPI, doctorAPI } from '../services/api'
 import AppointmentTable from '../components/appointment/AppointmentTable'
+import ConfirmModal from '../components/common/ConfirmModal'
 
 function AdminDashboard() {
   const navigate = useNavigate()
@@ -13,6 +14,10 @@ function AdminDashboard() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
+  
+  // Modal state
+  const [showCancelModal, setShowCancelModal] = useState(false)
+  const [appointmentToCancel, setAppointmentToCancel] = useState(null)
 
   // Filters
   const [dateFilter, setDateFilter] = useState('')
@@ -57,20 +62,26 @@ function AdminDashboard() {
     fetchAppointments()
   }, [dateFilter, doctorFilter, statusFilter])
 
-  // Handle cancel
-  const handleCancel = async (appointmentId) => {
-    if (!window.confirm('Are you sure you want to cancel this appointment?')) {
-      return
-    }
+  // Handle cancel - opens confirmation modal
+  const handleCancel = (appointmentId) => {
+    setAppointmentToCancel(appointmentId)
+    setShowCancelModal(true)
+  }
+
+  // Confirm cancellation
+  const confirmCancel = async () => {
+    if (!appointmentToCancel) return
 
     try {
-      await appointmentAPI.cancelAppointment(appointmentId)
+      await appointmentAPI.cancelAppointment(appointmentToCancel)
       setSuccess('Appointment cancelled successfully')
       fetchAppointments()
       setTimeout(() => setSuccess(null), 3000)
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to cancel appointment')
       setTimeout(() => setError(null), 3000)
+    } finally {
+      setAppointmentToCancel(null)
     }
   }
 
@@ -203,6 +214,21 @@ function AdminDashboard() {
           />
         </div>
       </main>
+
+      {/* Confirmation Modal */}
+      <ConfirmModal
+        isOpen={showCancelModal}
+        onClose={() => {
+          setShowCancelModal(false)
+          setAppointmentToCancel(null)
+        }}
+        onConfirm={confirmCancel}
+        title="Cancel Appointment"
+        message="Are you sure you want to cancel this appointment? This action cannot be undone."
+        confirmText="Yes, Cancel"
+        cancelText="No, Keep it"
+        type="danger"
+      />
     </div>
   )
 }
