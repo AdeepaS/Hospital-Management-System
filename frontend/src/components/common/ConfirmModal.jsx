@@ -61,7 +61,7 @@ function ConfirmModal({ isOpen, onClose, onConfirm, title, message, confirmText 
       <div className="relative z-50 w-full max-w-md transform rounded-lg bg-white p-6 shadow-2xl border border-slate-200 transition-all">
         <div className="flex items-start gap-4">
           {/* Icon */}
-          <div className={`flex-shrink-0 rounded-full p-3 ${currentStyle.bgColor}`}>
+          <div className={`shrink-0 rounded-full p-3 ${currentStyle.bgColor}`}>
             {currentStyle.icon}
           </div>
 
