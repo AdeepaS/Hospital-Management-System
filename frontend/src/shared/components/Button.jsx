@@ -8,16 +8,16 @@ function Button({
   onClick,
   ...props 
 }) {
-  const baseStyles = 'font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed'
+  const baseStyles = 'font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed'
   
   const variants = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
-    secondary: 'bg-slate-600 text-white hover:bg-slate-700 focus:ring-slate-500',
-    success: 'bg-green-600 text-white hover:bg-green-700 focus:ring-green-500',
-    danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
-    warning: 'bg-yellow-600 text-white hover:bg-yellow-700 focus:ring-yellow-500',
-    outline: 'border-2 border-slate-300 bg-white text-slate-700 hover:bg-slate-50 focus:ring-slate-400',
-    ghost: 'text-slate-700 hover:bg-slate-100 focus:ring-slate-400'
+    primary: 'bg-[#2563EB] text-white hover:bg-[#1D4ED8] hover:shadow-md focus:ring-[#2563EB]',
+    secondary: 'bg-[#E0F2FE] text-[#2563EB] hover:bg-[#BAE6FD] focus:ring-[#2563EB]',
+    success: 'bg-[#DCFCE7] text-[#16A34A] hover:bg-[#BBF7D0] focus:ring-[#16A34A]',
+    danger: 'bg-[#FEE2E2] text-[#DC2626] hover:bg-[#FECACA] focus:ring-[#DC2626]',
+    warning: 'bg-[#FEF3C7] text-[#D97706] hover:bg-[#FDE68A] focus:ring-[#D97706]',
+    outline: 'border border-[#BAE6FD] bg-white text-[#2563EB] hover:bg-[#F0F9FF] focus:ring-[#2563EB]',
+    ghost: 'text-[#2563EB] hover:bg-[#F0F9FF] focus:ring-[#2563EB]'
   }
   
   const sizes = {

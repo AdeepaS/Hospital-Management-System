@@ -51,7 +51,7 @@ function Dashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-100">
-        <div className="h-12 w-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        <div className="h-12 w-12 border-4 border-[#2563EB] border-t-transparent rounded-full animate-spin"></div>
       </div>
     )
   }
@@ -59,8 +59,8 @@ function Dashboard() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-slate-900">Dashboard Overview</h1>
-        <p className="text-slate-600 mt-1">Welcome to your admin dashboard. Here's what's happening today.</p>
+        <h1 className="text-2xl font-bold text-gray-900">Dashboard Overview</h1>
+        <p className="text-gray-600 mt-1">Welcome to your admin dashboard. Here's what's happening today.</p>
       </div>
 
       {/* Stats Grid */}
@@ -69,87 +69,58 @@ function Dashboard() {
           title="Total Doctors"
           value={stats.totalDoctors}
           subtitle="Active medical staff"
-          icon={
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-2xl">
-              👨‍⚕️
-            </div>
-          }
+          className="hover:shadow-md transition-all duration-200 border-[#E0F2FE]"
         />
         <StatCard
           title="Total Patients"
           value={stats.totalPatients}
           subtitle="Registered patients"
-          icon={
-            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-2xl">
-              👥
-            </div>
-          }
+          className="hover:shadow-md transition-all duration-200 border-[#E0F2FE]"
         />
         <StatCard
           title="Today's Appointments"
           value={stats.todayAppointments}
           subtitle="Scheduled for today"
-          icon={
-            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-2xl">
-              📅
-            </div>
-          }
-          trend="up"
           trendValue="+12% from yesterday"
+          className="hover:shadow-md transition-all duration-200 border-[#E0F2FE]"
         />
         <StatCard
           title="Pending Lab Tests"
           value={stats.pendingLabTests}
           subtitle="Awaiting results"
-          icon={
-            <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center text-2xl">
-              🔬
-            </div>
-          }
+          className="hover:shadow-md transition-all duration-200 border-[#E0F2FE]"
         />
         <StatCard
           title="Low Stock Medicines"
           value={stats.lowStockMedicines}
           subtitle="Need reordering"
-          icon={
-            <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center text-2xl">
-              💊
-            </div>
-          }
           trend="down"
           trendValue="Action required"
+          className="hover:shadow-md transition-all duration-200 border-[#E0F2FE]"
         />
         <StatCard
           title="Equipment Maintenance"
           value={stats.maintenanceDue}
           subtitle="Due this week"
-          icon={
-            <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-2xl">
-              🔧
-            </div>
-          }
+          className="hover:shadow-md transition-all duration-200 border-[#E0F2FE]"
         />
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-slate-900 mb-4">Quick Actions</h2>
+      <div className="bg-white rounded-lg shadow-sm border border-[#E0F2FE] p-6">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <button className="p-4 border-2 border-slate-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-center">
-            <div className="text-2xl mb-2">➕</div>
-            <div className="text-sm font-medium text-slate-700">Add Doctor</div>
+          <button className="p-4 bg-[#F0F9FF] border border-[#BAE6FD] rounded-lg hover:bg-[#E0F2FE] hover:border-[#7DD3FC] hover:shadow-md transition-all duration-200 text-center">
+            <div className="text-sm font-medium text-[#2563EB]">Add Doctor</div>
           </button>
-          <button className="p-4 border-2 border-slate-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-center">
-            <div className="text-2xl mb-2">📅</div>
-            <div className="text-sm font-medium text-slate-700">New Appointment</div>
+          <button className="p-4 bg-[#F0F9FF] border border-[#BAE6FD] rounded-lg hover:bg-[#E0F2FE] hover:border-[#7DD3FC] hover:shadow-md transition-all duration-200 text-center">
+            <div className="text-sm font-medium text-[#2563EB]">New Appointment</div>
           </button>
-          <button className="p-4 border-2 border-slate-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-center">
-            <div className="text-2xl mb-2">📊</div>
-            <div className="text-sm font-medium text-slate-700">View Reports</div>
+          <button className="p-4 bg-[#F0F9FF] border border-[#BAE6FD] rounded-lg hover:bg-[#E0F2FE] hover:border-[#7DD3FC] hover:shadow-md transition-all duration-200 text-center">
+            <div className="text-sm font-medium text-[#2563EB]">View Reports</div>
           </button>
-          <button className="p-4 border-2 border-slate-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-center">
-            <div className="text-2xl mb-2">⚙️</div>
-            <div className="text-sm font-medium text-slate-700">Settings</div>
+          <button className="p-4 bg-[#F0F9FF] border border-[#BAE6FD] rounded-lg hover:bg-[#E0F2FE] hover:border-[#7DD3FC] hover:shadow-md transition-all duration-200 text-center">
+            <div className="text-sm font-medium text-[#2563EB]">Settings</div>
           </button>
         </div>
       </div>

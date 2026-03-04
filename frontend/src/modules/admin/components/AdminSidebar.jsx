@@ -20,13 +20,11 @@ function AdminSidebar() {
     {
       id: 'dashboard',
       label: 'Dashboard',
-      icon: '📊',
       path: '/admin'
     },
     {
       id: 'users',
       label: 'User Management',
-      icon: '👥',
       subItems: [
         { label: 'Doctors', path: '/admin/users/doctors' },
         { label: 'Patients', path: '/admin/users/patients' },
@@ -36,7 +34,6 @@ function AdminSidebar() {
     {
       id: 'appointments',
       label: 'Appointments',
-      icon: '📅',
       subItems: [
         { label: 'All Appointments', path: '/admin/appointments' },
         { label: 'Pending', path: '/admin/appointments/pending' },
@@ -47,7 +44,6 @@ function AdminSidebar() {
     {
       id: 'lab',
       label: 'Lab Management',
-      icon: '🔬',
       subItems: [
         { label: 'Test Types', path: '/admin/lab/test-types' },
         { label: 'Lab Reports', path: '/admin/lab/reports' },
@@ -58,7 +54,6 @@ function AdminSidebar() {
     {
       id: 'pharmacy',
       label: 'Pharmacy',
-      icon: '💊',
       subItems: [
         { label: 'Medicine Inventory', path: '/admin/pharmacy/inventory' },
         { label: 'Low Stock', path: '/admin/pharmacy/low-stock' },
@@ -69,7 +64,6 @@ function AdminSidebar() {
     {
       id: 'equipment',
       label: 'Equipment & Supplies',
-      icon: '🏥',
       subItems: [
         { label: 'Medical Equipment', path: '/admin/equipment/medical' },
         { label: 'Maintenance', path: '/admin/equipment/maintenance' },
@@ -79,7 +73,6 @@ function AdminSidebar() {
     {
       id: 'billing',
       label: 'Billing & Finance',
-      icon: '💰',
       subItems: [
         { label: 'Payments', path: '/admin/billing/payments' },
         { label: 'Invoices', path: '/admin/billing/invoices' },
@@ -89,7 +82,6 @@ function AdminSidebar() {
     {
       id: 'reports',
       label: 'Reports & Analytics',
-      icon: '📈',
       subItems: [
         { label: 'Revenue Reports', path: '/admin/reports/revenue' },
         { label: 'Appointment Stats', path: '/admin/reports/appointments' },
@@ -100,7 +92,6 @@ function AdminSidebar() {
     {
       id: 'system',
       label: 'System',
-      icon: '⚙️',
       subItems: [
         { label: 'Settings', path: '/admin/system/settings' },
         { label: 'Audit Logs', path: '/admin/system/audit-logs' }
@@ -109,11 +100,11 @@ function AdminSidebar() {
   ]
 
   return (
-    <aside className="w-64 bg-slate-900 text-white min-h-screen flex flex-col">
+    <aside className="w-64 bg-white border-r border-gray-200 min-h-screen flex flex-col shadow-sm">
       {/* Logo/Brand */}
-      <div className="p-6 border-b border-slate-700">
-        <h1 className="text-xl font-bold">HMS Admin</h1>
-        <p className="text-xs text-slate-400 mt-1">Hospital Management</p>
+      <div className="p-6 border-b border-gray-200">
+        <h1 className="text-xl font-bold text-gray-900">HMS Admin</h1>
+        <p className="text-xs text-gray-500 mt-1">Hospital Management</p>
       </div>
 
       {/* Navigation */}
@@ -125,27 +116,29 @@ function AdminSidebar() {
               <div>
                 <button
                   onClick={() => toggleMenu(item.id)}
-                  className="w-full flex items-center justify-between px-6 py-3 text-sm hover:bg-slate-800 transition-colors"
+                  className="w-full flex items-center justify-between px-6 py-3 text-sm text-gray-700 hover:bg-[#E0F2FE] hover:text-[#2563EB] transition-all duration-200 font-medium"
                 >
-                  <span className="flex items-center gap-3">
-                    <span className="text-lg">{item.icon}</span>
-                    <span>{item.label}</span>
-                  </span>
-                  <span className={`transform transition-transform ${expandedMenus[item.id] ? 'rotate-90' : ''}`}>
-                    ▶
-                  </span>
+                  <span>{item.label}</span>
+                  <svg 
+                    className={`w-4 h-4 transition-transform duration-200 ${expandedMenus[item.id] ? 'rotate-180' : ''}`}
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
                 </button>
-                {expandedMenus[item.id] && (
-                  <div className="bg-slate-800">
+                <div className={`overflow-hidden transition-all duration-300 ${expandedMenus[item.id] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                  <div className="bg-gray-50">
                     {item.subItems.map((subItem) => (
                       <NavLink
                         key={subItem.path}
                         to={subItem.path}
                         className={({ isActive }) =>
-                          `block pl-14 pr-6 py-2.5 text-sm transition-colors ${
+                          `block pl-10 pr-6 py-2.5 text-sm transition-all duration-200 ${
                             isActive
-                              ? 'bg-blue-600 text-white'
-                              : 'text-slate-300 hover:bg-slate-700 hover:text-white'
+                              ? 'bg-[#E0F2FE] text-[#2563EB] font-medium border-l-4 border-[#2563EB]'
+                              : 'text-gray-600 hover:bg-[#F0F9FF] hover:text-[#2563EB] border-l-4 border-transparent'
                           }`
                         }
                       >
@@ -153,7 +146,7 @@ function AdminSidebar() {
                       </NavLink>
                     ))}
                   </div>
-                )}
+                </div>
               </div>
             ) : (
               // Single menu item
@@ -161,14 +154,13 @@ function AdminSidebar() {
                 to={item.path}
                 end
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-6 py-3 text-sm transition-colors ${
+                  `flex items-center px-6 py-3 text-sm transition-all duration-200 font-medium ${
                     isActive
-                      ? 'bg-blue-600 text-white'
-                      : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                      ? 'bg-[#E0F2FE] text-[#2563EB] border-l-4 border-[#2563EB]'
+                      : 'text-gray-700 hover:bg-[#E0F2FE] hover:text-[#2563EB] border-l-4 border-transparent'
                   }`
                 }
               >
-                <span className="text-lg">{item.icon}</span>
                 <span>{item.label}</span>
               </NavLink>
             )}
@@ -177,13 +169,12 @@ function AdminSidebar() {
       </nav>
 
       {/* Logout Button */}
-      <div className="p-4 border-t border-slate-700">
+      <div className="p-4 border-t border-gray-200">
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-4 py-3 text-sm bg-red-600 hover:bg-red-700 rounded-lg transition-colors"
+          className="w-full px-4 py-3 text-sm bg-[#E0F2FE] text-[#2563EB] hover:bg-[#BAE6FD] rounded-md transition-all duration-200 font-medium"
         >
-          <span className="text-lg">🚪</span>
-          <span>Logout</span>
+          Logout
         </button>
       </div>
     </aside>

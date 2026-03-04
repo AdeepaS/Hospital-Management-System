@@ -89,62 +89,62 @@ function AllAppointments() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-slate-900">All Appointments</h1>
-        <p className="text-slate-600 mt-1">Manage and monitor all hospital appointments</p>
+        <h1 className="text-2xl font-bold text-gray-900">All Appointments</h1>
+        <p className="text-gray-600 mt-1">Manage and monitor all hospital appointments</p>
       </div>
 
       {/* Messages */}
       {error && (
-        <div className="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800">
+        <div className="mb-4 rounded-lg bg-[#FEE2E2] border border-[#FECACA] p-4 text-sm text-[#DC2626]">
           {error}
         </div>
       )}
       {success && (
-        <div className="mb-4 rounded-lg bg-green-50 p-4 text-sm text-green-800">
+        <div className="mb-4 rounded-lg bg-[#DCFCE7] border border-[#BBF7D0] p-4 text-sm text-[#16A34A]">
           {success}
         </div>
       )}
 
       {/* Stats Card */}
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
-        <div className="rounded-lg bg-white p-6 shadow-sm">
-          <p className="text-sm font-medium text-slate-500">Total Appointments</p>
-          <p className="mt-1 text-3xl font-semibold text-slate-900">{appointments.length}</p>
+        <div className="rounded-lg bg-white border border-[#E0F2FE] p-6 shadow-sm hover:shadow-md transition-all duration-200">
+          <p className="text-sm font-medium text-gray-500">Total Appointments</p>
+          <p className="mt-1 text-3xl font-semibold text-gray-900">{appointments.length}</p>
         </div>
-        <div className="rounded-lg bg-white p-6 shadow-sm">
-          <p className="text-sm font-medium text-slate-500">Booked</p>
-          <p className="mt-1 text-3xl font-semibold text-green-600">
+        <div className="rounded-lg bg-white border border-[#E0F2FE] p-6 shadow-sm hover:shadow-md transition-all duration-200">
+          <p className="text-sm font-medium text-gray-500">Booked</p>
+          <p className="mt-1 text-3xl font-semibold text-[#16A34A]">
             {appointments.filter((a) => a.status === 'booked').length}
           </p>
         </div>
-        <div className="rounded-lg bg-white p-6 shadow-sm">
-          <p className="text-sm font-medium text-slate-500">Cancelled</p>
-          <p className="mt-1 text-3xl font-semibold text-red-600">
+        <div className="rounded-lg bg-white border border-[#E0F2FE] p-6 shadow-sm hover:shadow-md transition-all duration-200">
+          <p className="text-sm font-medium text-gray-500">Cancelled</p>
+          <p className="mt-1 text-3xl font-semibold text-[#DC2626]">
             {appointments.filter((a) => a.status === 'cancelled').length}
           </p>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="mb-6 rounded-lg bg-white p-6 shadow-sm">
-        <h2 className="mb-4 text-lg font-semibold text-slate-900">Filters</h2>
+      <div className="mb-6 rounded-lg bg-white border border-[#E0F2FE] p-6 shadow-sm">
+        <h2 className="mb-4 text-lg font-semibold text-gray-900">Filters</h2>
         <div className="grid gap-4 sm:grid-cols-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Date</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
             <input
               type="date"
               value={dateFilter}
               onChange={(e) => setDateFilter(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border border-[#BAE6FD] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-[#2563EB] transition-all duration-200"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Doctor</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Doctor</label>
             <select
               value={doctorFilter}
               onChange={(e) => setDoctorFilter(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border border-[#BAE6FD] bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-[#2563EB] transition-all duration-200"
             >
               <option value="">All Doctors</option>
               {doctors.map((doctor) => (
@@ -156,11 +156,11 @@ function AllAppointments() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Status</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border border-[#BAE6FD] bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-[#2563EB] transition-all duration-200"
             >
               <option value="">All Status</option>
               <option value="booked">Booked</option>
@@ -171,7 +171,7 @@ function AllAppointments() {
           <div className="flex items-end">
             <button
               onClick={handleResetFilters}
-              className="w-full rounded-lg bg-slate-600 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700"
+              className="w-full rounded-md bg-[#E0F2FE] text-[#2563EB] px-4 py-2 text-sm font-medium hover:bg-[#BAE6FD] transition-all duration-200"
             >
               Reset Filters
             </button>
@@ -180,7 +180,7 @@ function AllAppointments() {
       </div>
 
       {/* Appointments Table */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
+      <div className="bg-white rounded-lg shadow-sm border border-[#E0F2FE] p-6">
         <AppointmentTable
           appointments={appointments}
           onCancel={handleCancel}
