@@ -18,6 +18,7 @@ import Dashboard from '../modules/admin/pages/dashboard/Dashboard'
 import AllAppointments from '../modules/admin/pages/appointments/AllAppointments'
 import DoctorsManagement from '../modules/admin/pages/users/DoctorsManagement'
 import PatientsManagement from '../modules/admin/pages/users/PatientsManagement'
+import PatientDetails from '../modules/admin/pages/users/PatientDetails'
 
 // Shared/Common
 import ComingSoon from '../shared/components/ComingSoon'
@@ -98,6 +99,7 @@ function AppRoutes() {
           {/* User Management */}
           <Route path="users/doctors" element={<DoctorsManagement />} />
           <Route path="users/patients" element={<PatientsManagement />} />
+          <Route path="users/patients/:id" element={<PatientDetails />} />
           <Route path="users/roles" element={<ComingSoon title="Roles & Permissions" description="Manage system roles and permissions" icon="🔐" />} />
           
           {/* Appointments */}
