@@ -100,15 +100,15 @@ function AdminSidebar() {
   ]
 
   return (
-    <aside className="w-64 bg-white border-r border-gray-200 min-h-screen flex flex-col shadow-sm">
+    <aside className="fixed left-0 top-0 w-64 bg-white border-r border-gray-200 h-screen flex flex-col shadow-sm z-40">
       {/* Logo/Brand */}
-      <div className="p-6 border-b border-gray-200">
+      <div className="p-6 border-b border-gray-200 shrink-0">
         <h1 className="text-xl font-bold text-gray-900">HMS Admin</h1>
         <p className="text-xs text-gray-500 mt-1">Hospital Management</p>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto py-4">
+      <nav className="flex-1 overflow-y-auto py-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
         {menuItems.map((item) => (
           <div key={item.id}>
             {item.subItems ? (
@@ -169,7 +169,7 @@ function AdminSidebar() {
       </nav>
 
       {/* Logout Button */}
-      <div className="p-4 border-t border-gray-200">
+      <div className="p-4 border-t border-gray-200 shrink-0">
         <button
           onClick={handleLogout}
           className="w-full px-4 py-3 text-sm bg-[#E0F2FE] text-[#2563EB] hover:bg-[#BAE6FD] rounded-md transition-all duration-200 font-medium"
