@@ -12,15 +12,58 @@ const doctorSchema = new mongoose.Schema({
     unique: true,
     lowercase: true
   },
+  phone: {
+    type: String,
+    trim: true
+  },
+  profilePhoto: {
+    type: String,
+    default: 'https://via.placeholder.com/150/2563EB/FFFFFF?text=Doctor'
+  },
   specialization: {
     type: String,
     required: true,
+    trim: true
+  },
+  department: {
+    type: String,
+    trim: true
+  },
+  experienceYears: {
+    type: Number,
+    min: 0
+  },
+  licenseNumber: {
+    type: String,
     trim: true
   },
   consultationFee: {
     type: Number,
     required: true,
     min: 0
+  },
+  education: {
+    type: String,
+    trim: true
+  },
+  bio: {
+    type: String,
+    trim: true
+  },
+  languages: {
+    type: [String],
+    default: ['English']
+  },
+  rating: {
+    type: Number,
+    min: 0,
+    max: 5,
+    default: 4.0
+  },
+  status: {
+    type: String,
+    enum: ['active', 'inactive', 'on_leave'],
+    default: 'active'
   },
   workingDays: {
     type: [String],
